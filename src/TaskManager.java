@@ -12,6 +12,14 @@ public class TaskManager {
         return new ArrayList<>(tasks.values());
     }
 
+    public List<Epic> getAllEpic() {
+        return new ArrayList<>(epics.values());
+    }
+
+    public List<Subtask> getAllSubtask() {
+        return new ArrayList<>(subtasks.values());
+    }
+
     public void removeAllTask() {
         tasks.clear();
         subtasks.clear();
@@ -63,12 +71,15 @@ public class TaskManager {
     }
 
     public void createSubtask(Subtask subtask) {
-        if (epics.containsKey(subtask.getEpicId())) {
-            int id = updateTaskId();
-            subtask.setId(id);
-            subtasks.put(id, subtask);
-            epics.get(subtask.getEpicId()).addSubtaskId(id);
-            updateEpicStatus(subtask.getEpicId());
+        int id = updateTaskId(); // Получаем новый уникальный идентификатор
+        subtask.setId(id); // Устанавливаем идентификатор подзадачи
+        subtasks.put(id, subtask); // Добавляем подзадачу в коллекцию подзадач
+
+        // Находим эпик, к которому относится подзадача, и добавляем идентификатор подзадачи
+        Epic epic = epics.get(subtask.getEpicId());
+        if (epic != null) {
+            epic.addSubtaskId(id); // Добавляем ID подзадачи в эпик
+            updateEpicStatus(epic.getId()); // Пересчитываем статус эпика
         }
     }
 
