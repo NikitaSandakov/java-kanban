@@ -71,15 +71,14 @@ public class TaskManager {
     }
 
     public void createSubtask(Subtask subtask) {
-        int id = updateTaskId(); // Получаем новый уникальный идентификатор
-        subtask.setId(id); // Устанавливаем идентификатор подзадачи
-        subtasks.put(id, subtask); // Добавляем подзадачу в коллекцию подзадач
+        int id = updateTaskId();
+        subtask.setId(id);
+        subtasks.put(id, subtask);
 
-        // Находим эпик, к которому относится подзадача, и добавляем идентификатор подзадачи
         Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
-            epic.addSubtaskId(id); // Добавляем ID подзадачи в эпик
-            updateEpicStatus(epic.getId()); // Пересчитываем статус эпика
+            epic.addSubtaskId(id);
+            updateEpicStatus(epic.getId());
         }
     }
 
