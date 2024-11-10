@@ -3,8 +3,6 @@ package ru.scompany.trackerapp;
 import ru.scompany.trackerapp.model.*;
 import ru.scompany.trackerapp.service.*;
 
-import java.util.List;
-
 public class Main {
 
     public static void main(String[] args) {
