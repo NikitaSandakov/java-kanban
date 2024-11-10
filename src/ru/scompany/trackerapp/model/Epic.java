@@ -1,5 +1,4 @@
 package ru.scompany.trackerapp.model;
-import ru.scompany.trackerapp.service.*;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,6 +23,11 @@ public class Epic extends Task {
     public void removeSubtaskId(int subtaskId) {
         subtasksIds.remove(Integer.valueOf(subtaskId));
     }
+
+    public void clearSubtasksId() {
+        subtasksIds.clear();
+    }
+
 
     @Override
     public String toString() {

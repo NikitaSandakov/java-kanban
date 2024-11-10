@@ -1,5 +1,4 @@
 package ru.scompany.trackerapp.model;
-import ru.scompany.trackerapp.service.*;
 
 import java.util.Objects;
 

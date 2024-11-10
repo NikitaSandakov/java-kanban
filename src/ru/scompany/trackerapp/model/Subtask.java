@@ -1,5 +1,4 @@
 package ru.scompany.trackerapp.model;
-import ru.scompany.trackerapp.service.*;
 
 public class Subtask extends Task {
     private final int epicId;

@@ -1,4 +1,5 @@
 package ru.scompany.trackerapp.service;
+
 import ru.scompany.trackerapp.model.*;
 
 import java.util.HashMap;
@@ -27,12 +28,21 @@ public class TaskManager {
         tasks.clear();
     }
 
+    public HashMap<Integer, Subtask> getSubtasks() {
+        return subtasks;
+    }
+
     public void removeAllSubtask() {
         subtasks.clear();
+        for (Epic epic : epics.values()) {
+            epic.clearSubtasksId();
+            updateEpicStatus(epic.getId());
+        }
     }
 
     public void removeAllEpic() {
         epics.clear();
+        subtasks.clear();
     }
 
     public Task getTaskById(int id) {
@@ -69,11 +79,11 @@ public class TaskManager {
         if (epic != null) {
             for (int subtaskId : epic.getSubtasksId()) {
                 Subtask subtask = subtasks.get(subtaskId);
-                if (subtask != null) {
-                    subtaskOfEpic.add(subtask);
-                }
+                subtaskOfEpic.add(subtask);
+
             }
-        } return subtaskOfEpic;
+        }
+        return subtaskOfEpic;
     }
 
     public void createTask(Task task) {

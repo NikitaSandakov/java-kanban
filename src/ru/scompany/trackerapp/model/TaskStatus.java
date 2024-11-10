@@ -1,4 +1,4 @@
-package ru.scompany.trackerapp.service;
+package ru.scompany.trackerapp.model;
 
 public enum TaskStatus {
     NEW,
