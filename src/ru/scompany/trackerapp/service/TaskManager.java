@@ -28,10 +28,6 @@ public class TaskManager {
         tasks.clear();
     }
 
-    public HashMap<Integer, Subtask> getSubtasks() {
-        return subtasks;
-    }
-
     public void removeAllSubtask() {
         subtasks.clear();
         for (Epic epic : epics.values()) {
@@ -102,7 +98,6 @@ public class TaskManager {
         int id = updateTaskId();
         subtask.setId(id);
         subtasks.put(id, subtask);
-
         Epic epic = epics.get(subtask.getEpicId());
         if (epic != null) {
             epic.addSubtaskId(id);
@@ -150,7 +145,7 @@ public class TaskManager {
         }
     }
 
-    public int updateTaskId() {
+    private int updateTaskId() {
         return ++taskId;
     }
 
