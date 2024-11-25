@@ -11,7 +11,12 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
-    private final ArrayList<Integer> historyList = new ArrayList<>();
+    private final HistoryManager historyManager;
+
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.historyManager = historyManager;
+    }
+
 
     @Override
     public List<Task> getAllTask() {
@@ -50,48 +55,28 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(int id) {
-        if (tasks.containsKey(id)) {
-            if (historyList.size() < 10) {
-                historyList.add(id);
-                return tasks.get(id);
-            } else {
-                historyList.remove(0);
-                historyList.add(id);
-                return tasks.get(id);
-            }
+        Task task = tasks.get(id);
+        if (task != null) {
+            historyManager.add(task);
         }
-        return null;
+        return task;
     }
-
 
     @Override
     public Task getEpic(int id) {
-        if (epics.containsKey(id)) {
-            if (historyList.size() < 10) {
-                historyList.add(id);
-                return epics.get(id);
-            } else {
-                historyList.remove(0);
-                historyList.add(id);
-                return epics.get(id);
-            }
+        Task epic = epics.get(id);
+        if (epic != null) {
+            historyManager.add(epic);
         }
-        return null;
+        return epic;
     }
 
-    @Override
     public Task getSubtask(int id) {
-        if (subtasks.containsKey(id)) {
-            if (historyList.size() < 10) {
-                historyList.add(id);
-                return subtasks.get(id);
-            } else {
-                historyList.remove(0);
-                historyList.add(id);
-                return subtasks.get(id);
-            }
+        Task subtask = subtasks.get(id);
+        if (subtask != null) {
+            historyManager.add(subtask);
         }
-        return null;
+        return subtask;
     }
 
     @Override
@@ -197,12 +182,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int updateTaskId() {
         return ++taskId;
-    }
-
-    @Override
-    public List<Task> getHistory() {
-        System.out.println(historyList);
-        return List.of();
     }
 
 }

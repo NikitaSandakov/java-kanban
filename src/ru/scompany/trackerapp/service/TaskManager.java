@@ -7,6 +7,7 @@ import ru.scompany.trackerapp.model.Task;
 import java.util.List;
 
 public interface TaskManager {
+
     List<Task> getAllTask();
 
     List<Epic> getAllEpic();
@@ -41,5 +42,4 @@ public interface TaskManager {
 
     int updateTaskId();
 
-    List<Task> getHistory();
 }
