@@ -1,7 +1,11 @@
 package ru.scompany.trackerapp;
 
+import org.junit.jupiter.api.Test;
 import ru.scompany.trackerapp.model.*;
 import ru.scompany.trackerapp.service.*;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Main {
 

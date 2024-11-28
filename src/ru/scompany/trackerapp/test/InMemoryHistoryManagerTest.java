@@ -1,8 +1,9 @@
-package ru.scompany.trackerapp.service;
+package ru.scompany.trackerapp.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.scompany.trackerapp.model.*;
+import ru.scompany.trackerapp.service.InMemoryHistoryManager;
 
 import java.util.List;
 

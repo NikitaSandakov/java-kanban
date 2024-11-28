@@ -1,6 +1,9 @@
-package ru.scompany.trackerapp.model;
+package ru.scompany.trackerapp.test;
 
 import org.junit.jupiter.api.Test;
+import ru.scompany.trackerapp.model.Epic;
+import ru.scompany.trackerapp.model.Subtask;
+import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.InMemoryHistoryManager;
 import ru.scompany.trackerapp.service.InMemoryTaskManager;
 

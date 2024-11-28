@@ -1,9 +1,12 @@
-package ru.scompany.trackerapp.service;
+package ru.scompany.trackerapp.test;
 
 import org.junit.jupiter.api.Test;
+import ru.scompany.trackerapp.service.HistoryManager;
+import ru.scompany.trackerapp.service.InMemoryHistoryManager;
+import ru.scompany.trackerapp.service.Managers;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ManagersTest {
 

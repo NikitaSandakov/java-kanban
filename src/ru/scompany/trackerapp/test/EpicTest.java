@@ -1,9 +1,12 @@
-package ru.scompany.trackerapp.model;
+package ru.scompany.trackerapp.test;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+import ru.scompany.trackerapp.model.Epic;
+import ru.scompany.trackerapp.model.Subtask;
+import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.InMemoryHistoryManager;
 import ru.scompany.trackerapp.service.InMemoryTaskManager;
 
@@ -14,7 +17,7 @@ public class EpicTest {
         Epic epic1 = new Epic(1, "Task 1", "Description 1");
         Epic epic2 = new Epic(1, "Task 1", "Description 1");
 
-        assertEquals(epic1, epic2);
+        Assertions.assertEquals(epic1, epic2);
     }
 
     @Test
@@ -28,7 +31,7 @@ public class EpicTest {
         taskManager.createSubtask(new Subtask(1, "Subtask", "Description", TaskStatus.NEW,
                 epic.getId()));
 
-        assertEquals(epic, epic1);
+        Assertions.assertEquals(epic, epic1);
 
     }
 

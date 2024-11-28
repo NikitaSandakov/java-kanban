@@ -1,6 +1,8 @@
-package ru.scompany.trackerapp.model;
+package ru.scompany.trackerapp.test;
 
 import org.junit.jupiter.api.Test;
+import ru.scompany.trackerapp.model.Task;
+import ru.scompany.trackerapp.model.TaskStatus;
 
 
 import static org.junit.jupiter.api.Assertions.*;
