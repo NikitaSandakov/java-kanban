@@ -1,4 +1,4 @@
-package ru.scompany.trackerapp.test;
+package test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
