@@ -1,17 +1,13 @@
 package ru.scompany.trackerapp;
 
-import org.junit.jupiter.api.Test;
 import ru.scompany.trackerapp.model.*;
 import ru.scompany.trackerapp.service.*;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Main {
 
     public static void main(String[] args) {
         HistoryManager historyManager = Managers.getDefaultHistory();
-        TaskManager manager = new InMemoryTaskManager(historyManager);
+        TaskManager<Task> manager = new InMemoryTaskManager(historyManager);
 
         Task task1 = new Task(0, "Name of the first task", "Task 1", TaskStatus.NEW);
         Task task2 = new Task(0, "Name of the second epic", "Task 2", TaskStatus.NEW);

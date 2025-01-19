@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryTaskManager implements TaskManager {
+public class InMemoryTaskManager implements TaskManager<Task> {
     private int taskId = 0;
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
@@ -16,7 +16,6 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
     }
-
 
     @Override
     public List<Task> getAllTask() {
