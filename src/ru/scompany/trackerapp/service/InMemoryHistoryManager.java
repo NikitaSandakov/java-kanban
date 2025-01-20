@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static final List<Task> history = new ArrayList<>();
-    private static final DoublyLinkedList taskList = new DoublyLinkedList();
-    private static final Map<Integer, Node> nodeMap = new HashMap<>();
+    private List<Task> history = new ArrayList<>();
+    private DoublyLinkedList taskList = new DoublyLinkedList();
+    private Map<Integer, Node> nodeMap = new HashMap<>();
 
     public void add(Task task) {
         for (int i = 0; i < history.size(); i++) {
@@ -58,7 +58,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    public static class DoublyLinkedList {
+    public class DoublyLinkedList {
         private Node head;
         private Node tail;
 

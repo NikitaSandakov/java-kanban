@@ -36,6 +36,21 @@ public class InMemoryHistoryManagerTest {
 
         List<Task> history = historyManager.getHistory();
         assertEquals(task, history.getFirst());
+        assertEquals(1, history.size());
+    }
+
+    @Test
+    public void testRemoveNode() {
+        Task task = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW);
+
+        historyManager.add(task);
+        List<Task> history = historyManager.getHistory();
+        assertFalse(history.isEmpty());
+        assertEquals(1, history.size());
+
+        historyManager.remove(task.getId());
+        history = historyManager.getHistory();
+        assertTrue(history.isEmpty());
     }
 
     @Test
@@ -76,7 +91,8 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testLinkLastAndGetTasks() {
-        InMemoryHistoryManager.DoublyLinkedList list = new InMemoryHistoryManager.DoublyLinkedList();
+        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        InMemoryHistoryManager.DoublyLinkedList list = historyManager.new DoublyLinkedList();
 
         Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW);
         Task task2 = new Task(2, "Task 2", "Description of Task 2", TaskStatus.NEW);
