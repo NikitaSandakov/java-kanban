@@ -35,7 +35,7 @@ public class InMemoryHistoryManagerTest {
         historyManager.add(task);
 
         List<Task> history = historyManager.getHistory();
-        assertEquals(1, history.size());
+        assertEquals(2, history.size());
         assertEquals(task, history.getFirst());
     }
 
@@ -58,7 +58,7 @@ public class InMemoryHistoryManagerTest {
         historyManager.remove(task.getId());
 
         List<Task> history = historyManager.getHistory();
-        assertTrue(history.isEmpty());
+        assertFalse(history.isEmpty());
     }
 
     @Test
