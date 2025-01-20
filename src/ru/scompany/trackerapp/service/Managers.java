@@ -1,7 +1,7 @@
 package ru.scompany.trackerapp.service;
 
 public class Managers {
-    public static HistoryManager getDefaultHistory() {
+    public static InMemoryHistoryManager getDefaultHistory() {
         return new InMemoryHistoryManager();
     }
 }

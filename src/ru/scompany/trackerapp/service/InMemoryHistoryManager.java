@@ -3,23 +3,23 @@ package ru.scompany.trackerapp.service;
 import ru.scompany.trackerapp.model.Task;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final List<Task> history = new ArrayList<>();
-    private final DoublyLinkedList taskList = new DoublyLinkedList();
-    private final HashMap<Integer, Node> nodeMap = new HashMap<>();
+    private static final List<Task> history = new ArrayList<>();
+    private static final DoublyLinkedList taskList = new DoublyLinkedList();
+    private final Map<Integer, Node> nodeMap = new HashMap<>();
 
     @Override
     public void add(Task task) {
-
-        Node existingNode = nodeMap.get(task.getId());
-        if (existingNode != null) {
-            taskList.removeNode(existingNode);
+        for (int i = 0; i < history.size(); i++) {
+            if (history.get(i).getId() == task.getId()) {
+                history.set(i, task);
+                return;
+            }
         }
-        nodeMap.remove(task.getId());
-        history.removeIf(t -> t.getId() == task.getId());
         history.add(task);
     }
 
@@ -52,7 +52,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    private class DoublyLinkedList {
+    public static class DoublyLinkedList {
         private Node head;
         private Node tail;
 

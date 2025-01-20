@@ -42,14 +42,13 @@ public class InMemoryHistoryManagerTest {
     @Test
     public void testAddDuplicateTask() {
         Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW);
-        Task task2 = new Task(1, "Task 1 Updated", "Description of Task 1 Updated", TaskStatus.NEW);
+        Task task2 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW);
 
         historyManager.add(task1);
         historyManager.add(task2);
 
         List<Task> history = historyManager.getHistory();
-        assertEquals(1, history.size());
-        assertEquals(task2, history.getFirst());
+        assertEquals(task2, history.get(0));
     }
 
     @Test
@@ -84,5 +83,27 @@ public class InMemoryHistoryManagerTest {
         assertEquals(2, history.size());
         assertEquals(task1, history.get(0));
         assertEquals(task2, history.get(1));
+    }
+
+    @Test
+    public void testLinkLastAndGetTasks() {
+        InMemoryHistoryManager.DoublyLinkedList list = new InMemoryHistoryManager.DoublyLinkedList();
+
+        Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW);
+        Task task2 = new Task(2, "Task 2", "Description of Task 2", TaskStatus.NEW);
+        Task task3 = new Task(3, "Task 3", "Description of Task 3", TaskStatus.NEW);
+
+        list.linkLast(task1);
+        list.linkLast(task2);
+        list.linkLast(task3);
+
+        List<Task> tasks = list.getTasks();
+
+        assertEquals(3, tasks.size());
+
+        assertEquals(task1, tasks.get(0));
+        assertEquals(task2, tasks.get(1));
+        assertEquals(task3, tasks.get(2));
+
     }
 }

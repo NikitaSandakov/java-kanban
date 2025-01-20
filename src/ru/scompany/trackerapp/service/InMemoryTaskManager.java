@@ -1,16 +1,20 @@
 package ru.scompany.trackerapp.service;
 
-import ru.scompany.trackerapp.model.*;
+import ru.scompany.trackerapp.model.Epic;
+import ru.scompany.trackerapp.model.Subtask;
+import ru.scompany.trackerapp.model.Task;
+import ru.scompany.trackerapp.model.TaskStatus;
 
+import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager<Task> {
     private int taskId = 0;
-    private final HashMap<Integer, Task> tasks = new HashMap<>();
-    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Subtask> subtasks = new HashMap<>();
+    private final Map<Integer, Epic> epics = new HashMap<>();
     private final HistoryManager historyManager;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
