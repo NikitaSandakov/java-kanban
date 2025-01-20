@@ -52,10 +52,10 @@ public class Task {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Task task = (Task) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Task task = (Task) obj;
         return id == task.id &&
                 Objects.equals(name, task.name) &&
                 Objects.equals(description, task.description) &&
@@ -71,7 +71,7 @@ public class Task {
     public String toString() {
         return "Tasks{" +
                 "id=" + id +
-                "name=" + name +
+                ", name=" + name +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';

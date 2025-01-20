@@ -10,9 +10,8 @@ import java.util.List;
 public class InMemoryHistoryManager implements HistoryManager {
     private static final List<Task> history = new ArrayList<>();
     private static final DoublyLinkedList taskList = new DoublyLinkedList();
-    private final Map<Integer, Node> nodeMap = new HashMap<>();
+    private static final Map<Integer, Node> nodeMap = new HashMap<>();
 
-    @Override
     public void add(Task task) {
         for (int i = 0; i < history.size(); i++) {
             if (history.get(i).getId() == task.getId()) {
@@ -20,7 +19,11 @@ public class InMemoryHistoryManager implements HistoryManager {
                 return;
             }
         }
-        history.add(task);
+
+        history.add(task.copy());
+        Node newNode = new Node(task);
+        taskList.linkLast(task);
+        nodeMap.put(task.getId(), newNode);
     }
 
     @Override
@@ -37,8 +40,11 @@ public class InMemoryHistoryManager implements HistoryManager {
                 break;
             }
         }
+
         if (taskToRemove != null) {
             history.remove(taskToRemove);
+            Node node = nodeMap.remove(id);
+            taskList.removeNode(node);
         }
     }
 
@@ -83,6 +89,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             if (node == null) {
                 return;
             }
+
             if (node.prev != null) {
                 node.prev.next = node.next;
             } else {
@@ -94,9 +101,11 @@ public class InMemoryHistoryManager implements HistoryManager {
             } else {
                 taskList.tail = node.prev;
             }
-            history.remove(node.task);
-        }
 
+            if (history.contains(node.task)) {
+                history.remove(node.task);
+            }
+        }
     }
 
 }

@@ -5,11 +5,12 @@ import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.*;
+import ru.scompany.trackerapp.service.Managers;
 
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryHistoryManager historyManager = Managers.getDefaultHistory();
+        HistoryManager  historyManager = Managers.getDefaultHistory();
         TaskManager<Task> manager = new InMemoryTaskManager(historyManager);
 
         Task task1 = new Task(0, "Name of the first task", "Task 1", TaskStatus.NEW);
@@ -89,7 +90,7 @@ public class Main {
         manager.getTask(2);
 
         System.out.println("История:");
-        for (Task task : ((HistoryManager) historyManager).getHistory()) {
+        for (Task task : (historyManager).getHistory()) {
             System.out.println(task);
         }
     }
