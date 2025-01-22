@@ -8,43 +8,28 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private List<Task> history = new ArrayList<>();
-    private DoublyLinkedList taskList = new DoublyLinkedList();
-    private Map<Integer, Node> nodeMap = new HashMap<>();
+    private final Map<Integer, Node> nodeMap = new HashMap<>();
 
     public void add(Task task) {
-        for (int i = 0; i < history.size(); i++) {
-            if (history.get(i).getId() == task.getId()) {
-                history.set(i, task);
-                return;
-            }
+        if (nodeMap.containsKey(task.getId())) {
+            Node oldNode = nodeMap.remove(task.getId());
+            removeNode(oldNode);
         }
 
-        history.add(task.copy());
-        Node newNode = new Node(task);
-        taskList.linkLast(task);
+        Node newNode = linkLast(task);
         nodeMap.put(task.getId(), newNode);
     }
 
     @Override
     public List<Task> getHistory() {
-        return new ArrayList<>(history);
+        return getTasks();
     }
 
     @Override
     public void remove(int id) {
-        Task taskToRemove = null;
-        for (Task task : history) {
-            if (task.getId() == id) {
-                taskToRemove = task;
-                break;
-            }
-        }
-
-        if (taskToRemove != null) {
-            history.remove(taskToRemove);
-            Node node = nodeMap.remove(id);
-            taskList.removeNode(node);
+        Node node = nodeMap.remove(id);
+        if (node != null) {
+            removeNode(node);
         }
     }
 
@@ -58,54 +43,49 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 
-    public class DoublyLinkedList {
-        private Node head;
-        private Node tail;
+    private Node head;
+    private Node tail;
 
-        public void linkLast(Task task) {
-            Node newNode = new Node(task);
-            if (tail == null) {
-                head = newNode;
-            } else {
-                tail.next = newNode;
-                newNode.prev = tail;
-            }
-            tail = newNode;
+    public Node linkLast(Task task) {
+        Node newNode = new Node(task);
+        if (tail == null) {
+            head = newNode;
+        } else {
+            tail.next = newNode;
+            newNode.prev = tail;
+        }
+        tail = newNode;
+        return newNode;
+    }
 
+    public List<Task> getTasks() {
+        List<Task> taskList = new ArrayList<>();
+        Node current = head;
+        while (current != null) {
+            taskList.add(current.task);
+            current = current.next;
+        }
+        return taskList;
+    }
+
+    public void removeNode(Node node) {
+        if (node == null) {
+            return;
         }
 
-        public List<Task> getTasks() {
-            List<Task> taskList = new ArrayList<>();
-
-            Node current = head;
-            while (current != null) {
-                taskList.add(current.task);
-                current = current.next;
-            }
-            return taskList;
+        if (node.prev != null) {
+            node.prev.next = node.next;
+        } else {
+            head = node.next;
         }
 
-        public void removeNode(Node node) {
-            if (node == null) {
-                return;
-            }
-
-            if (node.prev != null) {
-                node.prev.next = node.next;
-            } else {
-                taskList.head = node.next;
-            }
-
-            if (node.next != null) {
-                node.next.prev = node.prev;
-            } else {
-                taskList.tail = node.prev;
-            }
-
-            if (history.contains(node.task)) {
-                history.remove(node.task);
-            }
+        if (node.next != null) {
+            node.next.prev = node.prev;
+        } else {
+            tail = node.prev;
         }
+
+        nodeMap.remove(node.task.getId());
     }
 
 }

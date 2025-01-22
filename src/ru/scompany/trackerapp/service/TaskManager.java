@@ -42,4 +42,6 @@ public interface TaskManager<T extends Task> {
 
     int updateTaskId();
 
+    List<Task> getHistory();
+
 }

@@ -38,11 +38,17 @@ public class InMemoryTaskManager implements TaskManager<Task> {
 
     @Override
     public void removeAllTask() {
+        for (Task task : tasks.values()) {
+            historyManager.remove(task.getId());
+        }
         tasks.clear();
     }
 
     @Override
     public void removeAllSubtask() {
+        for (Subtask subtask : subtasks.values()) {
+            historyManager.remove(subtask.getId());
+        }
         subtasks.clear();
         for (Epic epic : epics.values()) {
             epic.clearSubtasksId();
@@ -52,6 +58,12 @@ public class InMemoryTaskManager implements TaskManager<Task> {
 
     @Override
     public void removeAllEpic() {
+        for (Epic epic : epics.values()) {
+            historyManager.remove(epic.getId());
+            for (int subtaskId : epic.getSubtasksId()) {
+                historyManager.remove(subtaskId);
+            }
+        }
         epics.clear();
         subtasks.clear();
     }
@@ -85,17 +97,21 @@ public class InMemoryTaskManager implements TaskManager<Task> {
     @Override
     public void removeTaskById(int id) {
         if (tasks.remove(id) != null) {
+            historyManager.remove(id);
             return;
         }
         if (subtasks.containsKey(id)) {
             int epicId = subtasks.remove(id).getEpicId();
             epics.get(epicId).removeSubtaskId(id);
+            historyManager.remove(id);
             updateEpicStatus(epicId);
         } else if (epics.containsKey(id)) {
             Epic epic = epics.remove(id);
             for (int subtaskId : epic.getSubtasksId()) {
                 subtasks.remove(subtaskId);
+                historyManager.remove(subtaskId);
             }
+            historyManager.remove(epic.getId());
         }
     }
 
@@ -185,6 +201,11 @@ public class InMemoryTaskManager implements TaskManager<Task> {
     @Override
     public int updateTaskId() {
         return ++taskId;
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 
 }
