@@ -1,4 +1,4 @@
-package ru.scompany.trackerapp.test;
+package test;
 
 import org.junit.jupiter.api.Test;
 import ru.scompany.trackerapp.service.HistoryManager;
@@ -6,7 +6,8 @@ import ru.scompany.trackerapp.service.InMemoryHistoryManager;
 import ru.scompany.trackerapp.service.Managers;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+
 
 class ManagersTest {
 
@@ -16,7 +17,7 @@ class ManagersTest {
 
         assertNotNull(historyManager, "HistoryManager should not be null");
 
-        assertTrue(historyManager instanceof InMemoryHistoryManager, "Expected instance of InMemoryHistoryManager");
+        assertInstanceOf(InMemoryHistoryManager.class, historyManager);
 
     }
 }

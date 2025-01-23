@@ -8,7 +8,7 @@ public class Task {
     protected String description;
     protected TaskStatus status;
 
-    public Task (int id, String name, String description, TaskStatus status) {
+    public Task(int id, String name, String description, TaskStatus status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -55,22 +55,23 @@ public class Task {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Task tasks = (Task) obj;
-        return id == tasks.id &&
-                Objects.equals(description, tasks.description) &&
-                status == tasks.status;
+        Task task = (Task) obj;
+        return id == task.id &&
+                Objects.equals(name, task.name) &&
+                Objects.equals(description, task.description) &&
+                status == task.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, status);
+        return Objects.hash(id, name, description, status);
     }
 
     @Override
     public String toString() {
         return "Tasks{" +
                 "id=" + id +
-                "name=" + name +
+                ", name=" + name +
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}';

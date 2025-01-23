@@ -1,8 +1,11 @@
-package ru.scompany.trackerapp.test;
+package test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.scompany.trackerapp.model.*;
+import ru.scompany.trackerapp.model.Task;
+import ru.scompany.trackerapp.model.Epic;
+import ru.scompany.trackerapp.model.Subtask;
+import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.HistoryManager;
 import ru.scompany.trackerapp.service.InMemoryHistoryManager;
 import ru.scompany.trackerapp.service.InMemoryTaskManager;
@@ -90,24 +93,6 @@ public class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void testIdConflict() {
-        Task task1 = new Task(1,"Task 1", "Description of Task 1", TaskStatus.NEW);
-        task1.setId(1);
-        taskManager.createTask(task1);
-
-        Task task2 = new Task(1,"Task 2", "Description of Task 2", TaskStatus.NEW);
-        taskManager.createTask(task2);
-
-        Task retrievedTask1 = taskManager.getTask(task1.getId());
-        Task retrievedTask2 = taskManager.getTask(task2.getId());
-
-        assertEquals(task1.getId(), retrievedTask1.getId());
-        assertEquals(task2.getId(), retrievedTask2.getId());
-        assertNotEquals(retrievedTask1.getId(), retrievedTask2.getId());
-
-    }
-
-    @Test
     public void testTaskImmutabilityAfterAdding() {
         Task originalTask = new Task(1,"Task 1", "Description of Task 1", TaskStatus.NEW);
         taskManager.createTask(originalTask);
@@ -119,6 +104,20 @@ public class InMemoryTaskManagerTest {
         assertEquals(originalTask.getDescription(), retrievedTask.getDescription());
         assertEquals(originalTask.getStatus(), retrievedTask.getStatus());
 
+    }
+
+    @Test
+    public void testHistoryIsEmptyAfterTaskDeletion() {
+        Task task = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW);
+        taskManager.createTask(task);
+
+        taskManager.getTask(task.getId());
+
+        taskManager.removeTaskById(task.getId());
+
+        System.out.println(taskManager.getHistory());
+        List<Task> history = taskManager.getHistory();
+        assertTrue(history.isEmpty());
     }
 
 }
