@@ -100,11 +100,11 @@ public class InMemoryHistoryManagerTest {
         Task task2 = new Task(2, "Task 2", "Description of Task 2", TaskStatus.NEW);
         Task task3 = new Task(3, "Task 3", "Description of Task 3", TaskStatus.NEW);
 
-        historyManager.linkLast(task1);
-        historyManager.linkLast(task2);
-        historyManager.linkLast(task3);
+        historyManager.add(task1);
+        historyManager.add(task2);
+        historyManager.add(task3);
 
-        List<Task> tasks = historyManager.getTasks();
+        List<Task> tasks = historyManager.getHistory();
 
         assertEquals(3, tasks.size());
 
