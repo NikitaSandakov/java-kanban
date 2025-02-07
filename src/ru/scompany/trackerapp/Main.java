@@ -9,10 +9,12 @@ import ru.scompany.trackerapp.service.HistoryManager;
 import ru.scompany.trackerapp.service.TaskManager;
 import ru.scompany.trackerapp.service.InMemoryTaskManager;
 
+import java.io.IOException;
+
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         HistoryManager  historyManager = Managers.getDefaultHistory();
         TaskManager<Task> manager = new InMemoryTaskManager(historyManager);
 

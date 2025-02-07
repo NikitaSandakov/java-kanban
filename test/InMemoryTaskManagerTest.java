@@ -1,4 +1,4 @@
-package test;
+package ru.scompany.trackerapp.test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,6 +10,7 @@ import ru.scompany.trackerapp.service.HistoryManager;
 import ru.scompany.trackerapp.service.InMemoryHistoryManager;
 import ru.scompany.trackerapp.service.InMemoryTaskManager;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,7 +54,7 @@ public class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void testCreateAndGetSubtask() {
+    public void testCreateAndGetSubtask() throws IOException {
         Epic epic = new Epic(1,"Epic 1", "Description of Epic 1");
         taskManager.createEpic(epic);
 
@@ -79,7 +80,7 @@ public class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void testRemoveEpicAndSubtasks() {
+    public void testRemoveEpicAndSubtasks() throws IOException {
         Epic epic = new Epic(1,"Epic 1", "Description of Epic 1");
         taskManager.createEpic(epic);
 

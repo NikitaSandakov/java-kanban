@@ -5,6 +5,7 @@ import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.TaskStatus;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager<Task> {
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
-    private final HistoryManager historyManager;
+    public final HistoryManager historyManager;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
@@ -86,12 +87,25 @@ public class InMemoryTaskManager implements TaskManager<Task> {
         return epic;
     }
 
+    @Override
     public Task getSubtask(int id) {
         Task subtask = subtasks.get(id);
         if (subtask != null) {
             historyManager.add(subtask);
         }
         return subtask;
+    }
+
+    public Map<Integer, Task> getTasks() {
+        return tasks;
+    }
+
+    public Map<Integer, Subtask> getSubtasks() {
+        return subtasks;
+    }
+
+    public Map<Integer, Epic> getEpics() {
+        return epics;
     }
 
     @Override
@@ -145,7 +159,7 @@ public class InMemoryTaskManager implements TaskManager<Task> {
     }
 
     @Override
-    public void createSubtask(Subtask subtask) {
+    public void createSubtask(Subtask subtask) throws IOException {
         int id = updateTaskId();
         subtask.setId(id);
         subtasks.put(id, subtask);

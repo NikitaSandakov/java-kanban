@@ -1,4 +1,4 @@
-package test;
+package ru.scompany.trackerapp.test;
 
 import org.junit.jupiter.api.Test;
 import ru.scompany.trackerapp.model.Epic;

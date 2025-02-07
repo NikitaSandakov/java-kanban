@@ -1,4 +1,4 @@
-package test;
+package ru.scompany.trackerapp.test;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -9,6 +9,8 @@ import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.InMemoryHistoryManager;
 import ru.scompany.trackerapp.service.InMemoryTaskManager;
+
+import java.io.IOException;
 
 public class EpicTest {
 
@@ -21,7 +23,7 @@ public class EpicTest {
     }
 
     @Test
-    public void testEpicCannotAddItselfAsSubTask() {
+    public void testEpicCannotAddItselfAsSubTask() throws IOException {
         InMemoryTaskManager taskManager = new InMemoryTaskManager(new InMemoryHistoryManager());
         Epic epic = new Epic(1, "1 epic", "Description 1 epic");
         Epic epic1 = new Epic(1, "1 epic", "Description 1 epic");
