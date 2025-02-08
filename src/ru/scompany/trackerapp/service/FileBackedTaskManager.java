@@ -159,7 +159,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private static void restoreHistoryFromString(FileBackedTaskManager manager, String historyLine) {
         String[] ids = historyLine.split(",");
         for (String id : ids) {
-            System.out.println(id);
             int taskId = Integer.parseInt(id);
             if (manager.getTasks().containsKey(taskId)) {
                 manager.historyManager.add(manager.getTasks().get(taskId));
