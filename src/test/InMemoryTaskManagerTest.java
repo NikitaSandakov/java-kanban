@@ -54,7 +54,7 @@ public class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void testCreateAndGetSubtask() throws IOException {
+    public void testCreateAndGetSubtask() {
         Epic epic = new Epic(1,"Epic 1", "Description of Epic 1");
         taskManager.createEpic(epic);
 
@@ -80,7 +80,7 @@ public class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void testRemoveEpicAndSubtasks() throws IOException {
+    public void testRemoveEpicAndSubtasks() {
         Epic epic = new Epic(1,"Epic 1", "Description of Epic 1");
         taskManager.createEpic(epic);
 

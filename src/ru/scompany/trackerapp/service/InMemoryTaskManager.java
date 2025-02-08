@@ -2,7 +2,6 @@ package ru.scompany.trackerapp.service;
 
 import ru.scompany.trackerapp.model.*;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;

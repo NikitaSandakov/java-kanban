@@ -23,7 +23,7 @@ public class EpicTest {
     }
 
     @Test
-    public void testEpicCannotAddItselfAsSubTask() throws IOException {
+    public void testEpicCannotAddItselfAsSubTask() {
         InMemoryTaskManager taskManager = new InMemoryTaskManager(new InMemoryHistoryManager());
         Epic epic = new Epic(1, "1 epic", "Description 1 epic");
         Epic epic1 = new Epic(1, "1 epic", "Description 1 epic");

@@ -49,7 +49,7 @@ class FileBackedTaskManagerTest {
         assertEquals(2, loadedManager.historyManager.getHistory().size(), "История просмотров восстановилась некорректно");
     }
 
-    private static FileBackedTaskManager getFileBackedTaskManager(File tempFile) throws IOException {
+    private static FileBackedTaskManager getFileBackedTaskManager(File tempFile) {
         FileBackedTaskManager manager = new FileBackedTaskManager(tempFile, new InMemoryHistoryManager());
 
         Task task1 = new Task(1, "Задача 1", "Описание 1", TaskStatus.NEW);
