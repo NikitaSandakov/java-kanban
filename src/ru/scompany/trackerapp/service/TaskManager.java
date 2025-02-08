@@ -4,6 +4,7 @@ import ru.scompany.trackerapp.model.Epic;
 import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.Task;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface TaskManager<T extends Task> {
@@ -34,7 +35,7 @@ public interface TaskManager<T extends Task> {
 
     void createEpic(Epic epic);
 
-    void createSubtask(Subtask subtask);
+    void createSubtask(Subtask subtask) throws IOException;
 
     void updateTask(Task task);
 
