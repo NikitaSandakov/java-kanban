@@ -88,9 +88,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private String toString(Task task) {
         StringBuilder sb = new StringBuilder();
         sb.append(task.getId()).append(",")
-                .append(task instanceof Epic ? TaskType.EPIC :
-                        task instanceof Subtask ? TaskType.SUBTASK : TaskType.TASK)
-                .append(",")
+                .append(getTaskType(task)).append(",")
                 .append(task.getName()).append(",")
                 .append(task.getStatus()).append(",")
                 .append(task.getDescription()).append(",");
@@ -100,6 +98,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
 
         return sb.toString();
+    }
+
+    private TaskType getTaskType(Task task) {
+        if (task instanceof Epic) {
+            return TaskType.EPIC;
+        } else if (task instanceof Subtask) {
+            return TaskType.SUBTASK;
+        } else {
+            return TaskType.TASK;
+        }
     }
 
     private static Task fromString(String value) {
