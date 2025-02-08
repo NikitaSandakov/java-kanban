@@ -1,9 +1,6 @@
 package ru.scompany.trackerapp.service;
 
-import ru.scompany.trackerapp.model.Epic;
-import ru.scompany.trackerapp.model.Subtask;
-import ru.scompany.trackerapp.model.Task;
-import ru.scompany.trackerapp.model.TaskStatus;
+import ru.scompany.trackerapp.model.*;
 
 import java.io.IOException;
 import java.util.Map;
@@ -159,7 +156,7 @@ public class InMemoryTaskManager implements TaskManager<Task> {
     }
 
     @Override
-    public void createSubtask(Subtask subtask) throws IOException {
+    public void createSubtask(Subtask subtask) {
         int id = updateTaskId();
         subtask.setId(id);
         subtasks.put(id, subtask);
@@ -169,6 +166,7 @@ public class InMemoryTaskManager implements TaskManager<Task> {
             updateEpicStatus(epic.getId());
         }
     }
+
 
     @Override
     public void updateTask(Task task) {

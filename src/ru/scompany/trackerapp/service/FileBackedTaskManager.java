@@ -16,6 +16,7 @@ import java.util.List;
 
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
+    private static final String CSV_HEADER = "id,type,name,status,description,epic\n";
     private final File file;
 
     public FileBackedTaskManager(File file, HistoryManager historyManager) {
@@ -25,7 +26,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public void save() {
         try (Writer writer = new FileWriter(file, false)) {
-            writer.write("id,type,name,status,description,epic\n"); // Заголовок CSV
+            writer.write(CSV_HEADER);
             for (Task task : getAllTask()) {
                 writer.write(toString(task) + "\n");
             }
@@ -77,7 +78,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException("Ошибка чтения данных из файла: " + file.getName(), e);
+            throw new ManagerSaveException("Ошибка чтения данных из файла: " + file.getName(), e);
         }
 
         return manager;

@@ -1,9 +1,6 @@
 package ru.scompany.trackerapp;
 
-import ru.scompany.trackerapp.model.Epic;
-import ru.scompany.trackerapp.model.Subtask;
-import ru.scompany.trackerapp.model.Task;
-import ru.scompany.trackerapp.model.TaskStatus;
+import ru.scompany.trackerapp.model.*;
 import ru.scompany.trackerapp.service.Managers;
 import ru.scompany.trackerapp.service.HistoryManager;
 import ru.scompany.trackerapp.service.TaskManager;
@@ -14,7 +11,7 @@ import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         HistoryManager  historyManager = Managers.getDefaultHistory();
         TaskManager<Task> manager = new InMemoryTaskManager(historyManager);
 
@@ -29,14 +26,22 @@ public class Main {
                 TaskStatus.NEW, epic1.getId());
         Subtask subtask2 = new Subtask(0, "Name of the second epic", "Subtask 2 for Epic 1",
                 TaskStatus.NEW, epic1.getId());
-        manager.createSubtask(subtask1);
-        manager.createSubtask(subtask2);
+        try {
+            manager.createSubtask(subtask1);
+            manager.createSubtask(subtask2);
+        } catch (IOException e) {
+            throw new ManagerSaveException("Ошибка при создании подзадачи", e);
+        }
 
         Epic epic2 = new Epic(0, "Name of the second epic", "Epic 2");
         manager.createEpic(epic2);
         Subtask subtask3 = new Subtask(0, "Name of the third subtask", "Subtask 3 for Epic 2",
                 TaskStatus.NEW, epic2.getId());
-        manager.createSubtask(subtask3);
+        try {
+            manager.createSubtask(subtask3);
+        } catch (IOException e) {
+            throw new ManagerSaveException("Ошибка при создании подзадачи", e);
+        }
 
         System.out.println("\nСписок всех задач:");
         System.out.println(manager.getAllTask());
