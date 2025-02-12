@@ -4,17 +4,25 @@ import ru.scompany.trackerapp.model.Epic;
 import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.TaskStatus;
-import ru.scompany.trackerapp.service.Managers;
-import ru.scompany.trackerapp.service.HistoryManager;
-import ru.scompany.trackerapp.service.TaskManager;
-import ru.scompany.trackerapp.service.InMemoryTaskManager;
+import ru.scompany.trackerapp.service.FileBackedTaskManager;
+import ru.scompany.trackerapp.service.InMemoryHistoryManager;
+
+
+import java.io.File;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        HistoryManager  historyManager = Managers.getDefaultHistory();
-        TaskManager<Task> manager = new InMemoryTaskManager(historyManager);
+
+        File file = new File("tasks.csv");
+        FileBackedTaskManager manager;
+
+        if (file.exists()) {
+            manager = FileBackedTaskManager.loadFromFile(file);
+        } else {
+            manager = new FileBackedTaskManager(file, new InMemoryHistoryManager());
+        }
 
         Task task1 = new Task(0, "Name of the first task", "Task 1", TaskStatus.NEW);
         Task task2 = new Task(0, "Name of the second epic", "Task 2", TaskStatus.NEW);
@@ -93,7 +101,7 @@ public class Main {
         manager.getTask(2);
 
         System.out.println("История:");
-        for (Task task : (historyManager).getHistory()) {
+        for (Task task : (manager.getHistory())) {
             System.out.println(task);
         }
     }
