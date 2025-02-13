@@ -24,20 +24,19 @@ public class Main {
             manager = new FileBackedTaskManager(file, new InMemoryHistoryManager());
         }
 
-        // Создаем задачи с корректными временными интервалами
-        Task task1 = new Task(0, "Name of the first task", "Task 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());
-        Task task2 = new Task(0, "Name of the second task", "Task 2", TaskStatus.NEW, Duration.ofHours(2), LocalDateTime.now().plusHours(3)); // Смещаем на 3 часа
-        manager.createTask(task1);
+        Task task1 = new Task(0, "Name of the first task", "Task 1", TaskStatus.NEW,
+                Duration.ofHours(1), LocalDateTime.now());
+        Task task2 = new Task(0, "Name of the second task", "Task 2", TaskStatus.NEW,
+                Duration.ofHours(2), LocalDateTime.now().plusHours(3));
         manager.createTask(task2);
 
-        // Создаем эпик с подзадачами
         Epic epic1 = new Epic(0, "Name of the first epic", "Epic 1");
         manager.createEpic(epic1);
 
         Subtask subtask1 = new Subtask(0, "Name of the first subtask", "Subtask 1 for Epic 1",
-                TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(5), epic1.getId()); // Смещаем на 5 часов
+                TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(5), epic1.getId());
         Subtask subtask2 = new Subtask(0, "Name of the second subtask", "Subtask 2 for Epic 1",
-                TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(7), epic1.getId()); // Смещаем на 7 часов
+                TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(7), epic1.getId());
         manager.createSubtask(subtask1);
         manager.createSubtask(subtask2);
 
@@ -45,7 +44,7 @@ public class Main {
         manager.createEpic(epic2);
 
         Subtask subtask3 = new Subtask(0, "Name of the third subtask", "Subtask 3 for Epic 2",
-                TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(10), epic2.getId()); // Смещаем на 10 часов
+                TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(10), epic2.getId());
         manager.createSubtask(subtask3);
 
         System.out.println("\nСписок всех задач:");

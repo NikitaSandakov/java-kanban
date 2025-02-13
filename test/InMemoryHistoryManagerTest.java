@@ -115,8 +115,10 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testAddTwoIdenticalTasks() {
-        Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());
-        Task task2 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());
+        Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW,
+                Duration.ofHours(1), LocalDateTime.now());
+        Task task2 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW,
+                Duration.ofHours(1), LocalDateTime.now());
 
         historyManager.add(task1);
         historyManager.add(task2);
@@ -126,8 +128,6 @@ public class InMemoryHistoryManagerTest {
         assertEquals(task1, history.get(0));
     }
 
-    // Тесты на граничные условия
-
     @Test
     public void testEmptyHistory() {
         List<Task> history = historyManager.getHistory();
@@ -136,8 +136,10 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testRemoveTaskFromStart() {
-        Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());
-        Task task2 = new Task(2, "Task 2", "Description of Task 2", TaskStatus.IN_PROGRESS, Duration.ofHours(1), LocalDateTime.now().plusDays(1));
+        Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW,
+                Duration.ofHours(1), LocalDateTime.now());
+        Task task2 = new Task(2, "Task 2", "Description of Task 2", TaskStatus.IN_PROGRESS,
+                Duration.ofHours(1), LocalDateTime.now().plusDays(1));
         historyManager.add(task1);
         historyManager.add(task2);
 
@@ -150,9 +152,12 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testRemoveTaskFromMiddle() {
-        Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());
-        Task task2 = new Task(2, "Task 2", "Description of Task 2", TaskStatus.IN_PROGRESS, Duration.ofHours(2), LocalDateTime.now().plusDays(1));
-        Task task3 = new Task(3, "Task 3", "Description of Task 3", TaskStatus.DONE, Duration.ofHours(3), LocalDateTime.now().plusDays(2));
+        Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW,
+                Duration.ofHours(1), LocalDateTime.now());
+        Task task2 = new Task(2, "Task 2", "Description of Task 2", TaskStatus.IN_PROGRESS,
+                Duration.ofHours(2), LocalDateTime.now().plusDays(1));
+        Task task3 = new Task(3, "Task 3", "Description of Task 3", TaskStatus.DONE,
+                Duration.ofHours(3), LocalDateTime.now().plusDays(2));
         historyManager.add(task1);
         historyManager.add(task2);
         historyManager.add(task3);
@@ -167,8 +172,10 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testRemoveTaskFromEnd() {
-        Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());
-        Task task2 = new Task(2, "Task 2", "Description of Task 2", TaskStatus.IN_PROGRESS, Duration.ofHours(2), LocalDateTime.now().plusDays(1));
+        Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW,
+                Duration.ofHours(1), LocalDateTime.now());
+        Task task2 = new Task(2, "Task 2", "Description of Task 2", TaskStatus.IN_PROGRESS,
+                Duration.ofHours(2), LocalDateTime.now().plusDays(1));
         historyManager.add(task1);
         historyManager.add(task2);
 
@@ -178,4 +185,5 @@ public class InMemoryHistoryManagerTest {
         assertEquals(1, history.size(), "После удаления задачи с конца в истории должна остаться 1 задача.");
         assertEquals(task1, history.get(0), "Оставшаяся задача должна быть task1.");
     }
+
 }

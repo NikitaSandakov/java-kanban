@@ -71,10 +71,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 return manager;
             }
 
-            // Обработка строк с пропуском первой строки и пустых строк
             lines.stream()
                     .skip(1)
-                    .takeWhile(line -> !line.trim().isEmpty()) // убираем пустые строки с пробелами
+                    .takeWhile(line -> !line.trim().isEmpty())
                     .map(FileBackedTaskManager::fromString)
                     .forEach(task -> {
                         if (task instanceof Epic) {
@@ -100,7 +99,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return manager;
     }
 
-
     private String toString(Task task) {
         StringBuilder sb = new StringBuilder();
         sb.append(task.getId()).append(",")
@@ -109,15 +107,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 .append(task.getStatus()).append(",")
                 .append(task.getDescription()).append(",");
 
-        // Дополнительная проверка на null перед вызовом toMinutes
         Duration duration = task.getDuration();
         if (duration != null) {
             sb.append(duration.toMinutes()).append(",");
         } else {
-            sb.append("0,"); // Если duration равен null, ставим 0
+            sb.append("0,");
         }
 
-        sb.append(task.getStartTime()); // Сохраняем дату старта как строку
+        sb.append(task.getStartTime());
 
         if (task instanceof Subtask) {
             sb.append(",").append(((Subtask) task).getEpicId());
@@ -125,7 +122,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         return sb.toString();
     }
-
 
     private TaskType getTaskType(Task task) {
         if (task instanceof Epic) {
@@ -149,7 +145,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         String startTimeStr = fields[6];
         LocalDateTime startTime = (startTimeStr.equals("null") || startTimeStr.isEmpty())
-                ? LocalDateTime.now() // Устанавливаем текущее время, если в строке "null"
+                ? LocalDateTime.now()
                 : LocalDateTime.parse(startTimeStr);
 
         if (fields[1].equals("TASK")) {
@@ -161,16 +157,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-
     private static Duration parseDuration(String durationStr) {
         try {
             long minutes = Long.parseLong(durationStr);
             return Duration.ofMinutes(minutes);
         } catch (NumberFormatException e) {
-            return Duration.ZERO; // Вернем 0 минут, если возникла ошибка
+            return Duration.ZERO;
         }
     }
-
 
     private static String historyToString(HistoryManager historyManager) {
         return historyManager.getHistory().stream()

@@ -1,9 +1,19 @@
 package ru.scompany.trackerapp.service;
 
-import ru.scompany.trackerapp.model.*;
+import ru.scompany.trackerapp.model.Epic;
+import ru.scompany.trackerapp.model.Subtask;
+import ru.scompany.trackerapp.model.Task;
+import ru.scompany.trackerapp.model.TaskStatus;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+
+import java.util.Set;
+import java.util.Map;
+import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class InMemoryTaskManager implements TaskManager<Task> {
     private int taskId = 0;
@@ -240,4 +250,5 @@ public class InMemoryTaskManager implements TaskManager<Task> {
     public List<Task> getPrioritizedTasks() {
         return new ArrayList<>(prioritizedTasks);
     }
+
 }

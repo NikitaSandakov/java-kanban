@@ -3,9 +3,7 @@ package ru.scompany.trackerapp.service;
 import ru.scompany.trackerapp.model.Epic;
 import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.Task;
-import ru.scompany.trackerapp.model.TaskStatus;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface TaskManager<T extends Task> {

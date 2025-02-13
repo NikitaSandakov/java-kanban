@@ -38,4 +38,5 @@ public class SubtaskTest {
 
         assertNotEquals(epic, subtask);
     }
+
 }

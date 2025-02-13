@@ -59,7 +59,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
                 Duration.ofHours(1), LocalDateTime.now());
         taskManager.createTask(task);
 
-        // Обновляем задачу
         task.setName("Updated Task 1");
         task.setStatus(TaskStatus.IN_PROGRESS);
         taskManager.updateTask(task);
@@ -74,11 +73,12 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     public void testDeleteTask() {
         Task task = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW,
                 Duration.ofHours(1), LocalDateTime.now());
-        taskManager.createTask(task);
 
+        taskManager.createTask(task);
         taskManager.removeTaskById(task.getId());
 
         Task deletedTask = taskManager.getTask(task.getId());
+
         assertNull(deletedTask, "Задача должна быть удалена");
     }
 
@@ -92,4 +92,5 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
         assertEquals(1, taskManager.getHistory().size(), "История должна содержать 1 задачу");
     }
+
 }

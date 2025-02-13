@@ -30,7 +30,8 @@ public class EpicTest {
 
         taskManager.createEpic(epic);
 
-        Subtask subtask = new Subtask(1, "Subtask", "Description", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now(), epic.getId());
+        Subtask subtask = new Subtask(1, "Subtask", "Description", TaskStatus.NEW, Duration.ofHours(1),
+                LocalDateTime.now(), epic.getId());
 
         Assertions.assertDoesNotThrow(() -> taskManager.createSubtask(subtask));
     }
@@ -41,8 +42,10 @@ public class EpicTest {
         Epic epic = new Epic(1, "Epic 1", "Epic description");
         taskManager.createEpic(epic);
 
-        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 12, 0), epic.getId());
-        Subtask subtask2 = new Subtask(2, "Subtask 2", "Description 2", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 12, 30), epic.getId());
+        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.NEW, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 12, 0), epic.getId());
+        Subtask subtask2 = new Subtask(2, "Subtask 2", "Description 2", TaskStatus.NEW, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 12, 30), epic.getId());
 
         taskManager.createSubtask(subtask1);
 
@@ -66,9 +69,12 @@ public class EpicTest {
         Epic epic = new Epic(1, "Epic 1", "Epic description");
         taskManager.createEpic(epic);
 
-        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 12, 0), epic.getId());
-        Subtask subtask2 = new Subtask(2, "Subtask 2", "Description 2", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 13, 0), epic.getId());
-        Subtask subtask3 = new Subtask(3, "Subtask 3", "Description 3", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 14, 0), epic.getId());
+        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.NEW, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 12, 0), epic.getId());
+        Subtask subtask2 = new Subtask(2, "Subtask 2", "Description 2", TaskStatus.NEW, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 13, 0), epic.getId());
+        Subtask subtask3 = new Subtask(3, "Subtask 3", "Description 3", TaskStatus.NEW, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 14, 0), epic.getId());
 
         taskManager.createSubtask(subtask1);
         taskManager.createSubtask(subtask2);
@@ -85,8 +91,10 @@ public class EpicTest {
         Epic epic = new Epic(1, "Epic 1", "Epic description");
         taskManager.createEpic(epic);
 
-        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.DONE, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 12, 0), epic.getId());
-        Subtask subtask2 = new Subtask(2, "Subtask 2", "Description 2", TaskStatus.DONE, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 13, 0), epic.getId());
+        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.DONE, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 12, 0), epic.getId());
+        Subtask subtask2 = new Subtask(2, "Subtask 2", "Description 2", TaskStatus.DONE, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 13, 0), epic.getId());
 
         taskManager.createSubtask(subtask1);
         taskManager.createSubtask(subtask2);
@@ -102,9 +110,12 @@ public class EpicTest {
         Epic epic = new Epic(1, "Epic 1", "Epic description");
         taskManager.createEpic(epic);
 
-        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 12, 0), epic.getId());
-        Subtask subtask2 = new Subtask(2, "Subtask 2", "Description 2", TaskStatus.DONE, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 14, 0), epic.getId());
-        Subtask subtask3 = new Subtask(3, "Subtask 3", "Description 3", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 16, 0), epic.getId());
+        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.NEW, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 12, 0), epic.getId());
+        Subtask subtask2 = new Subtask(2, "Subtask 2", "Description 2", TaskStatus.DONE, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 14, 0), epic.getId());
+        Subtask subtask3 = new Subtask(3, "Subtask 3", "Description 3", TaskStatus.NEW, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 16, 0), epic.getId());
 
         taskManager.createSubtask(subtask1);
         taskManager.createSubtask(subtask2);
@@ -120,8 +131,10 @@ public class EpicTest {
         Epic epic = new Epic(1, "Epic 1", "Epic description");
         taskManager.createEpic(epic);
 
-        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.IN_PROGRESS, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 12, 0), epic.getId());
-        Subtask subtask2 = new Subtask(2, "Subtask 2", "Description 2", TaskStatus.IN_PROGRESS, Duration.ofHours(1), LocalDateTime.of(2025, 2, 12, 13, 0), epic.getId());
+        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.IN_PROGRESS, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 12, 0), epic.getId());
+        Subtask subtask2 = new Subtask(2, "Subtask 2", "Description 2", TaskStatus.IN_PROGRESS, Duration.ofHours(1),
+                LocalDateTime.of(2025, 2, 12, 13, 0), epic.getId());
 
         taskManager.createSubtask(subtask1);
         taskManager.createSubtask(subtask2);

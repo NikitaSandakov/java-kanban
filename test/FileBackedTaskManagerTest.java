@@ -29,7 +29,8 @@ public class FileBackedTaskManagerTest {
     @Test
     void shouldThrowManagerSaveExceptionWhenSaveFails() {
         Assertions.assertThrows(ManagerSaveException.class, () -> {
-            FileBackedTaskManager managerWithBadFile = new FileBackedTaskManager(new File("/restricted/path"), new InMemoryHistoryManager());
+            FileBackedTaskManager managerWithBadFile = new FileBackedTaskManager(new File("/restricted/path"),
+                    new InMemoryHistoryManager());
             managerWithBadFile.save();
         });
     }
@@ -51,8 +52,8 @@ public class FileBackedTaskManagerTest {
                 Files.createFile(TEST_FILE.toPath());
             }
 
-            // Убедитесь, что duration не равен null
-            Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());
+            Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW, Duration.ofHours(1),
+                    LocalDateTime.now());
             Epic epic1 = new Epic(2, "Epic 1", "Epic description");
 
             manager.createTask(task1);
@@ -72,33 +73,28 @@ public class FileBackedTaskManagerTest {
 
     @Test
     void shouldHandleSaveAndLoadCorrectly() throws IOException {
-        // Создаем несколько задач и сохраняем их
-        Task task1 = new Task(1, "Task 1", "Description of Task 1", ru.scompany.trackerapp.model.TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());
+        Task task1 = new Task(1, "Task 1", "Description of Task 1", ru.scompany.trackerapp.model.TaskStatus.NEW,
+                Duration.ofHours(1), LocalDateTime.now());
         Epic epic1 = new Epic(2, "Epic 1", "Epic description");
 
         manager.createTask(task1);
         manager.createEpic(epic1);
 
-        // Сохраняем в файл
         manager.save();
 
-        // Загружаем данные из файла
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(TEST_FILE);
 
-        // Проверяем, что задачи успешно загружены
         Assertions.assertEquals(1, loadedManager.getAllTask().size());
         Assertions.assertEquals(1, loadedManager.getAllEpic().size());
 
-        // Удаляем файл после теста
         Files.delete(TEST_FILE.toPath());
     }
 
     @Test
     void shouldThrowManagerSaveExceptionWhenFileIsNotAccessible() {
-        // Проверка, что исключение выбрасывается, если файл не доступен для записи
         Assertions.assertThrows(ManagerSaveException.class, () -> {
             FileBackedTaskManager managerWithNoPermission = new FileBackedTaskManager(new File("/restricted/path"), new InMemoryHistoryManager());
-            managerWithNoPermission.save(); // Ожидаем, что это вызовет исключение
+            managerWithNoPermission.save();
         });
     }
 
@@ -134,6 +130,5 @@ public class FileBackedTaskManagerTest {
 
         Files.delete(TEST_FILE.toPath());
     }
-
 
 }
