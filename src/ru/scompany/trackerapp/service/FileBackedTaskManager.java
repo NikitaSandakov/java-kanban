@@ -53,16 +53,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    private void writeToFile(Writer writer, String line) {
-        try {
-            writer.write(line + "\n");
-        } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка записи в файл", e);
-        }
-    }
-
     public static FileBackedTaskManager loadFromFile(File file) {
-        FileBackedTaskManager manager = new FileBackedTaskManager(file, new InMemoryHistoryManager());
+        FileBackedTaskManager manager = Managers.getFileBackedTaskManager(file);
 
         try {
             List<String> lines = Files.readAllLines(file.toPath());
@@ -97,6 +89,14 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
 
         return manager;
+    }
+
+    private void writeToFile(Writer writer, String line) {
+        try {
+            writer.write(line + "\n");
+        } catch (IOException e) {
+            throw new ManagerSaveException("Ошибка записи в файл", e);
+        }
     }
 
     private String toString(Task task) {

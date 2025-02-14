@@ -6,11 +6,11 @@ import ru.scompany.trackerapp.model.Epic;
 import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.InMemoryTaskManager;
+import ru.scompany.trackerapp.service.Managers;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EpicTest {
@@ -25,7 +25,7 @@ public class EpicTest {
 
     @Test
     public void testEpicCannotAddItselfAsSubTask() {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        InMemoryTaskManager taskManager = Managers.getDefaultTaskManager();
         Epic epic = new Epic(1, "1 epic", "Description 1 epic");
 
         taskManager.createEpic(epic);
@@ -38,7 +38,7 @@ public class EpicTest {
 
     @Test
     public void testSubtaskTimeOverlap() {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        InMemoryTaskManager taskManager = Managers.getDefaultTaskManager();
         Epic epic = new Epic(1, "Epic 1", "Epic description");
         taskManager.createEpic(epic);
 
@@ -65,7 +65,7 @@ public class EpicTest {
 
     @Test
     public void testEpicStatusAllNew() {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        InMemoryTaskManager taskManager = Managers.getDefaultTaskManager();
         Epic epic = new Epic(1, "Epic 1", "Epic description");
         taskManager.createEpic(epic);
 
@@ -87,7 +87,7 @@ public class EpicTest {
 
     @Test
     public void testEpicStatusAllDone() {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        InMemoryTaskManager taskManager = Managers.getDefaultTaskManager();
         Epic epic = new Epic(1, "Epic 1", "Epic description");
         taskManager.createEpic(epic);
 
@@ -106,7 +106,7 @@ public class EpicTest {
 
     @Test
     public void testEpicStatusMixedNewAndDone() {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        InMemoryTaskManager taskManager = Managers.getDefaultTaskManager();
         Epic epic = new Epic(1, "Epic 1", "Epic description");
         taskManager.createEpic(epic);
 
@@ -127,7 +127,7 @@ public class EpicTest {
 
     @Test
     public void testEpicStatusInProgress() {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        InMemoryTaskManager taskManager = Managers.getDefaultTaskManager();
         Epic epic = new Epic(1, "Epic 1", "Epic description");
         taskManager.createEpic(epic);
 

@@ -4,7 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.TaskStatus;
-import ru.scompany.trackerapp.service.InMemoryHistoryManager;
+import ru.scompany.trackerapp.service.HistoryManager;
+import ru.scompany.trackerapp.service.Managers;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -14,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class InMemoryHistoryManagerTest {
 
-    private InMemoryHistoryManager historyManager;
+    private HistoryManager historyManager;
 
     @BeforeEach
     public void setUp() {
-        historyManager = new InMemoryHistoryManager();
+        historyManager = Managers.getDefaultHistory();
     }
 
     @Test
@@ -95,7 +96,7 @@ public class InMemoryHistoryManagerTest {
 
     @Test
     public void testLinkLastAndGetTasks() {
-        InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+        HistoryManager historyManager = Managers.getDefaultHistory();
 
         Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());
         Task task2 = new Task(2, "Task 2", "Description of Task 2", TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now());

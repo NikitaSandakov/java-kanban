@@ -6,9 +6,9 @@ import ru.scompany.trackerapp.model.Task;
 
 import java.util.List;
 
-public interface TaskManager<T extends Task> {
+public interface TaskManager {
 
-    List<T> getAllTask();
+    List<Task> getAllTask();
 
     List<Epic> getAllEpic();
 
@@ -20,7 +20,7 @@ public interface TaskManager<T extends Task> {
 
     void removeAllEpic();
 
-    T getTask(int id);
+    Task getTask(int id);
 
     Task getEpic(int id);
 
@@ -30,7 +30,7 @@ public interface TaskManager<T extends Task> {
 
     List<Subtask> getSubtasksOfEpic(int epicId);
 
-    void createTask(T task);
+    void createTask(Task task);
 
     void createEpic(Epic epic);
 

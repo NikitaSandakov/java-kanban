@@ -5,7 +5,7 @@ import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.FileBackedTaskManager;
-import ru.scompany.trackerapp.service.InMemoryHistoryManager;
+import ru.scompany.trackerapp.service.Managers;
 
 import java.io.File;
 import java.time.Duration;
@@ -21,7 +21,7 @@ public class Main {
         if (file.exists()) {
             manager = FileBackedTaskManager.loadFromFile(file);
         } else {
-            manager = new FileBackedTaskManager(file, new InMemoryHistoryManager());
+            manager = Managers.getFileBackedTaskManager(file);
         }
 
         Task task1 = new Task(0, "Name of the first task", "Task 1", TaskStatus.NEW,
@@ -100,7 +100,9 @@ public class Main {
             System.out.println(subtask);
         }
 
-        manager.getTask(2);
+        manager.getTask(1);
+        manager.getEpic(5);
+        manager.getSubtask(6);
 
         System.out.println("История:");
         for (Task task : manager.getHistory()) {

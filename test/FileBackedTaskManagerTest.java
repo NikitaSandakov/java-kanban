@@ -9,6 +9,7 @@ import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.FileBackedTaskManager;
 import ru.scompany.trackerapp.service.InMemoryHistoryManager;
+import ru.scompany.trackerapp.service.Managers;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class FileBackedTaskManagerTest {
 
     @BeforeEach
     void setUp() {
-        manager = new FileBackedTaskManager(TEST_FILE, new InMemoryHistoryManager());
+        manager = Managers.getFileBackedTaskManager(TEST_FILE);
     }
 
     @Test

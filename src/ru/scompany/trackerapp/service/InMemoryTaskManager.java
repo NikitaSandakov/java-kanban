@@ -11,11 +11,10 @@ import java.util.List;
 
 import java.util.Set;
 import java.util.Map;
-import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class InMemoryTaskManager implements TaskManager<Task> {
+public class InMemoryTaskManager implements TaskManager {
     private int taskId = 0;
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
@@ -24,21 +23,8 @@ public class InMemoryTaskManager implements TaskManager<Task> {
     public HistoryManager historyManager;
 
     public InMemoryTaskManager() {
-        this.prioritizedTasks = new TreeSet<>(new TaskComparator());
-        this.historyManager = new InMemoryHistoryManager();
-    }
-
-    private boolean isTimeOverlap(Task task1, Task task2) {
-        LocalDateTime start1 = task1.getStartTime();
-        LocalDateTime end1 = task1.getEndTime();
-        LocalDateTime start2 = task2.getStartTime();
-        LocalDateTime end2 = task2.getEndTime();
-
-        if (start1 == null || end1 == null || start2 == null || end2 == null) {
-            return false;
-        }
-
-        return start1.isBefore(end2) && start2.isBefore(end1);
+        this.prioritizedTasks = Managers.getPrioritizedTasks();
+        this.historyManager = Managers.getDefaultHistory();
     }
 
     public boolean checkForTimeOverlap(Task newTask) {
@@ -154,6 +140,9 @@ public class InMemoryTaskManager implements TaskManager<Task> {
             }
             historyManager.remove(id);
         }
+        if (this instanceof FileBackedTaskManager) {
+            ((FileBackedTaskManager) this).save();
+        }
     }
 
     @Override
@@ -174,6 +163,9 @@ public class InMemoryTaskManager implements TaskManager<Task> {
         task.setId(id);
         tasks.put(id, task);
         prioritizedTasks.add(task);
+        if (this instanceof FileBackedTaskManager) {
+            ((FileBackedTaskManager) this).save();
+        }
     }
 
     @Override
@@ -182,6 +174,9 @@ public class InMemoryTaskManager implements TaskManager<Task> {
         epic.setId(id);
         epics.put(id, epic);
         prioritizedTasks.add(epic);
+        if (this instanceof FileBackedTaskManager) {
+            ((FileBackedTaskManager) this).save();
+        }
     }
 
     @Override
@@ -199,6 +194,9 @@ public class InMemoryTaskManager implements TaskManager<Task> {
             updateEpicStatus(epic.getId());
         }
         prioritizedTasks.add(subtask);
+        if (this instanceof FileBackedTaskManager) {
+            ((FileBackedTaskManager) this).save();
+        }
     }
 
     @Override
@@ -214,6 +212,10 @@ public class InMemoryTaskManager implements TaskManager<Task> {
             oldEpic.setDescription(task.getDescription());
         }
         prioritizedTasks.add(task);
+
+        if (this instanceof FileBackedTaskManager) {
+            ((FileBackedTaskManager) this).save();
+        }
     }
 
     @Override
@@ -235,11 +237,19 @@ public class InMemoryTaskManager implements TaskManager<Task> {
         } else {
             epic.setStatus(TaskStatus.IN_PROGRESS);
         }
+        if (this instanceof FileBackedTaskManager) {
+            ((FileBackedTaskManager) this).save();
+        }
     }
 
     @Override
     public int updateTaskId() {
-        return ++taskId;
+        taskId++;
+        if (this instanceof FileBackedTaskManager) {
+            ((FileBackedTaskManager) this).save();
+        }
+        return taskId;
+
     }
 
     @Override
@@ -247,8 +257,22 @@ public class InMemoryTaskManager implements TaskManager<Task> {
         return historyManager.getHistory();
     }
 
+    @Override
     public List<Task> getPrioritizedTasks() {
         return new ArrayList<>(prioritizedTasks);
+    }
+
+    private boolean isTimeOverlap(Task task1, Task task2) {
+        LocalDateTime start1 = task1.getStartTime();
+        LocalDateTime end1 = task1.getEndTime();
+        LocalDateTime start2 = task2.getStartTime();
+        LocalDateTime end2 = task2.getEndTime();
+
+        if (start1 == null || end1 == null || start2 == null || end2 == null) {
+            return false;
+        }
+
+        return start1.isBefore(end2) && start2.isBefore(end1);
     }
 
 }
