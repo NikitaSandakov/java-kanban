@@ -5,11 +5,11 @@ import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.FileBackedTaskManager;
-import ru.scompany.trackerapp.service.InMemoryHistoryManager;
-
+import ru.scompany.trackerapp.service.Managers;
 
 import java.io.File;
-
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class Main {
 
@@ -21,27 +21,30 @@ public class Main {
         if (file.exists()) {
             manager = FileBackedTaskManager.loadFromFile(file);
         } else {
-            manager = new FileBackedTaskManager(file, new InMemoryHistoryManager());
+            manager = Managers.getFileBackedTaskManager(file);
         }
 
-        Task task1 = new Task(0, "Name of the first task", "Task 1", TaskStatus.NEW);
-        Task task2 = new Task(0, "Name of the second epic", "Task 2", TaskStatus.NEW);
-        manager.createTask(task1);
+        Task task1 = new Task(0, "Name of the first task", "Task 1", TaskStatus.NEW,
+                Duration.ofHours(1), LocalDateTime.now());
+        Task task2 = new Task(0, "Name of the second task", "Task 2", TaskStatus.NEW,
+                Duration.ofHours(2), LocalDateTime.now().plusHours(3));
         manager.createTask(task2);
 
         Epic epic1 = new Epic(0, "Name of the first epic", "Epic 1");
         manager.createEpic(epic1);
+
         Subtask subtask1 = new Subtask(0, "Name of the first subtask", "Subtask 1 for Epic 1",
-                TaskStatus.NEW, epic1.getId());
-        Subtask subtask2 = new Subtask(0, "Name of the second epic", "Subtask 2 for Epic 1",
-                TaskStatus.NEW, epic1.getId());
+                TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(5), epic1.getId());
+        Subtask subtask2 = new Subtask(0, "Name of the second subtask", "Subtask 2 for Epic 1",
+                TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(7), epic1.getId());
         manager.createSubtask(subtask1);
         manager.createSubtask(subtask2);
 
         Epic epic2 = new Epic(0, "Name of the second epic", "Epic 2");
         manager.createEpic(epic2);
+
         Subtask subtask3 = new Subtask(0, "Name of the third subtask", "Subtask 3 for Epic 2",
-                TaskStatus.NEW, epic2.getId());
+                TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(10), epic2.getId());
         manager.createSubtask(subtask3);
 
         System.out.println("\nСписок всех задач:");
@@ -77,7 +80,6 @@ public class Main {
         System.out.println("\nСписок всех подзадач после удаления:");
         System.out.println(manager.getAllSubtask());
 
-
         System.out.println("\nПроверка из практикума");
         System.out.println("Задачи:");
         for (Task task : manager.getAllTask()) {
@@ -98,10 +100,12 @@ public class Main {
             System.out.println(subtask);
         }
 
-        manager.getTask(2);
+        manager.getTask(1);
+        manager.getEpic(5);
+        manager.getSubtask(6);
 
         System.out.println("История:");
-        for (Task task : (manager.getHistory())) {
+        for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
     }

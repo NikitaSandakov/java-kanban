@@ -20,12 +20,10 @@ public class InMemoryHistoryManager implements HistoryManager {
         nodeMap.put(task.getId(), newNode);
     }
 
-
     @Override
     public List<Task> getHistory() {
         return getTasks();
     }
-
 
     @Override
     public void remove(int id) {
@@ -60,7 +58,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         return newNode;
     }
 
-
     private List<Task> getTasks() {
         List<Task> taskList = new ArrayList<>();
         Node current = head;
@@ -72,7 +69,6 @@ public class InMemoryHistoryManager implements HistoryManager {
 
         return taskList;
     }
-
 
     private void removeNode(Node node) {
         if (node == null) return;
