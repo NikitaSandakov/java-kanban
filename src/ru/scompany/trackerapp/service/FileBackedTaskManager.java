@@ -29,6 +29,60 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.historyManager = historyManager;
     }
 
+    @Override
+    public void removeAllTask() {
+        super.removeAllTask();
+        save();
+    }
+
+    @Override
+    public void removeAllSubtask() {
+        super.removeAllSubtask();
+        save();
+    }
+
+    @Override
+    public void removeAllEpic() {
+        super.removeAllEpic();
+        save();
+    }
+
+    @Override
+    public void removeTaskById(int id) {
+        super.removeTaskById(id);
+        save();
+    }
+
+    @Override
+    public void createTask(Task task) {
+        super.createTask(task);
+        save();
+    }
+
+    @Override
+    public void createEpic(Epic epic) {
+        super.createEpic(epic);
+        save();
+    }
+
+    @Override
+    public void createSubtask(Subtask subtask) {
+        super.createSubtask(subtask);
+        save();
+    }
+
+    @Override
+    public void updateTask(Task task) {
+        super.updateTask(task);
+        save();
+    }
+
+    @Override
+    public void updateEpicStatus(int epicId) {
+        super.updateEpicStatus(epicId);
+        save();
+    }
+
     public void save() {
         try (Writer writer = new FileWriter(file, false)) {
             writer.write(CSV_HEADER);

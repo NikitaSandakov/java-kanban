@@ -30,7 +30,7 @@ class ManagersTest {
 
     @Test
     public void testGetDefaultTaskManagerReturnsInitializedManager() {
-        InMemoryTaskManager taskManager = Managers.getDefaultTaskManager();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
         assertNotNull(taskManager, "InMemoryTaskManager не должен быть нулевым");
         assertInstanceOf(InMemoryTaskManager.class, taskManager);
@@ -47,7 +47,7 @@ class ManagersTest {
 
     @Test
     public void testGetPrioritizedTasksOrder() {
-        InMemoryTaskManager taskManager = Managers.getDefaultTaskManager();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
         Task task1 = new Task(2, "Task 2", "Description 2", TaskStatus.NEW, Duration.ofHours(0), LocalDateTime.now());
         Task task2 = new Task(1, "Task 1", "Description 1", TaskStatus.NEW, Duration.ofHours(2), LocalDateTime.now().plusHours(3));

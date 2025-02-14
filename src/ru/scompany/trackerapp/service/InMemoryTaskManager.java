@@ -56,6 +56,12 @@ public class InMemoryTaskManager implements TaskManager {
         tasks.clear();
     }
 
+    private void add(Task task) {
+        int taskId = updateTaskId();
+        task.setId(taskId);
+        tasks.put(taskId, task);
+    }
+
     @Override
     public void removeAllSubtask() {
         subtasks.values().forEach(subtask -> {
@@ -140,9 +146,6 @@ public class InMemoryTaskManager implements TaskManager {
             }
             historyManager.remove(id);
         }
-        if (this instanceof FileBackedTaskManager) {
-            ((FileBackedTaskManager) this).save();
-        }
     }
 
     @Override
@@ -163,9 +166,6 @@ public class InMemoryTaskManager implements TaskManager {
         task.setId(id);
         tasks.put(id, task);
         prioritizedTasks.add(task);
-        if (this instanceof FileBackedTaskManager) {
-            ((FileBackedTaskManager) this).save();
-        }
     }
 
     @Override
@@ -174,9 +174,6 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setId(id);
         epics.put(id, epic);
         prioritizedTasks.add(epic);
-        if (this instanceof FileBackedTaskManager) {
-            ((FileBackedTaskManager) this).save();
-        }
     }
 
     @Override
@@ -194,9 +191,6 @@ public class InMemoryTaskManager implements TaskManager {
             updateEpicStatus(epic.getId());
         }
         prioritizedTasks.add(subtask);
-        if (this instanceof FileBackedTaskManager) {
-            ((FileBackedTaskManager) this).save();
-        }
     }
 
     @Override
@@ -213,9 +207,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
         prioritizedTasks.add(task);
 
-        if (this instanceof FileBackedTaskManager) {
-            ((FileBackedTaskManager) this).save();
-        }
     }
 
     @Override
@@ -237,19 +228,11 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             epic.setStatus(TaskStatus.IN_PROGRESS);
         }
-        if (this instanceof FileBackedTaskManager) {
-            ((FileBackedTaskManager) this).save();
-        }
     }
 
     @Override
     public int updateTaskId() {
-        taskId++;
-        if (this instanceof FileBackedTaskManager) {
-            ((FileBackedTaskManager) this).save();
-        }
-        return taskId;
-
+        return ++taskId;
     }
 
     @Override

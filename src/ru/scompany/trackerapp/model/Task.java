@@ -23,7 +23,6 @@ public class Task {
         this.endTime = getEndTime();
     }
 
-
     public Duration getDuration() {
         return duration;
     }
