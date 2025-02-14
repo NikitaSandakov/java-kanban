@@ -1,5 +1,7 @@
 package ru.scompany.trackerapp.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -7,12 +9,33 @@ public class Task {
     protected String name;
     protected String description;
     protected TaskStatus status;
+    protected Duration duration;
+    protected LocalDateTime startTime;
+    protected LocalDateTime endTime;
 
-    public Task(int id, String name, String description, TaskStatus status) {
+    public Task(int id, String name, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = getEndTime();
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (startTime == null || duration == null) {
+            return null;
+        }
+        return startTime.plus(duration);
     }
 
     public int getId() {
@@ -47,10 +70,6 @@ public class Task {
         this.status = status;
     }
 
-    public Task copy() {
-        return new Task(this.id, this.name, this.description, this.status);
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -69,11 +88,14 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Tasks{" +
+        return "Task{" +
                 "id=" + id +
-                ", name=" + name +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
+                ", duration=" + (duration != null ? duration.toMinutes() + " min" : "null") +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 '}';
     }
 

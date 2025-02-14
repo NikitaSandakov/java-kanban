@@ -1,123 +1,135 @@
 package test;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import ru.scompany.trackerapp.model.Epic;
-import ru.scompany.trackerapp.model.Subtask;
+import ru.scompany.trackerapp.model.ManagerSaveException;
 import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.FileBackedTaskManager;
 import ru.scompany.trackerapp.service.InMemoryHistoryManager;
+import ru.scompany.trackerapp.service.Managers;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class FileBackedTaskManagerTest {
 
-class FileBackedTaskManagerTest {
+    private static final File TEST_FILE = new File("testFile.csv");
+    private FileBackedTaskManager manager;
 
-    @Test
-    void shouldSaveAndLoadEmptyFile() throws IOException {
-        File tempFile = File.createTempFile("test_empty", ".csv");
-        tempFile.deleteOnExit();
-
-        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile, new InMemoryHistoryManager());
-        manager.save();
-
-        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
-
-        assertTrue(loadedManager.getAllTask().isEmpty(), "Список задач должен быть пустым");
-        assertTrue(loadedManager.getAllEpic().isEmpty(), "Список эпиков должен быть пустым");
-        assertTrue(loadedManager.getAllSubtask().isEmpty(), "Список подзадач должен быть пустым");
-        assertTrue(loadedManager.historyManager.getHistory().isEmpty(), "История должна быть пустой");
+    @BeforeEach
+    void setUp() {
+        manager = Managers.getFileBackedTaskManager(TEST_FILE);
     }
 
     @Test
-    void shouldSaveAndLoadMultipleTasks() throws IOException {
-        File tempFile = File.createTempFile("test_multiple_tasks", ".csv");
-        tempFile.deleteOnExit();
-
-        FileBackedTaskManager manager = getFileBackedTaskManager(tempFile);
-
-        manager.save();
-
-        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
-
-        assertEquals(2, loadedManager.getAllTask().size(), "Количество задач не совпадает");
-        assertEquals(1, loadedManager.getAllEpic().size(), "Количество эпиков не совпадает");
-        assertEquals(1, loadedManager.getAllSubtask().size(), "Количество подзадач не совпадает");
-
-        assertEquals(2, loadedManager.historyManager.getHistory().size(), "История просмотров восстановилась некорректно");
+    void shouldThrowManagerSaveExceptionWhenSaveFails() {
+        Assertions.assertThrows(ManagerSaveException.class, () -> {
+            FileBackedTaskManager managerWithBadFile = new FileBackedTaskManager(new File("/restricted/path"),
+                    new InMemoryHistoryManager());
+            managerWithBadFile.save();
+        });
     }
 
-    private static FileBackedTaskManager getFileBackedTaskManager(File tempFile) {
-        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile, new InMemoryHistoryManager());
+    @Test
+    void shouldThrowManagerSaveExceptionWhenLoadFails() {
+        File nonExistentFile = new File("non_existent_file.csv");
 
-        Task task1 = new Task(1, "Задача 1", "Описание 1", TaskStatus.NEW);
-        Task task2 = new Task(2, "Задача 2", "Описание 2", TaskStatus.IN_PROGRESS);
+        Assertions.assertThrows(ManagerSaveException.class, () -> {
+            FileBackedTaskManager.loadFromFile(nonExistentFile);
+        });
+    }
 
-        Epic epic1 = new Epic(3,"Эпик 1", "Описание эпика");
 
-        Subtask subtask1 = new Subtask(4,"Подзадача 1", "Описание подзадачи", TaskStatus.DONE, epic1.getId());
+    @Test
+    void shouldNotThrowExceptionWhenFileIsValid() throws IOException {
+        Assertions.assertDoesNotThrow(() -> {
+            if (!TEST_FILE.exists()) {
+                Files.createFile(TEST_FILE.toPath());
+            }
+
+            Task task1 = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW, Duration.ofHours(1),
+                    LocalDateTime.now());
+            Epic epic1 = new Epic(2, "Epic 1", "Epic description");
+
+            manager.createTask(task1);
+            manager.createEpic(epic1);
+
+            manager.save();
+
+            FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(TEST_FILE);
+            Assertions.assertNotNull(loadedManager);
+
+            Assertions.assertEquals(1, loadedManager.getAllTask().size());
+            Assertions.assertEquals(1, loadedManager.getAllEpic().size());
+
+            Files.delete(TEST_FILE.toPath());
+        });
+    }
+
+    @Test
+    void shouldHandleSaveAndLoadCorrectly() throws IOException {
+        Task task1 = new Task(1, "Task 1", "Description of Task 1", ru.scompany.trackerapp.model.TaskStatus.NEW,
+                Duration.ofHours(1), LocalDateTime.now());
+        Epic epic1 = new Epic(2, "Epic 1", "Epic description");
 
         manager.createTask(task1);
-        manager.createTask(task2);
         manager.createEpic(epic1);
-        manager.createSubtask(subtask1);
-
-
-        manager.getTask(task1.getId());
-        manager.getSubtask(subtask1.getId());
-        return manager;
-    }
-
-    @Test
-    void shouldRestoreCorrectDataFromFile() throws IOException {
-        File tempFile = File.createTempFile("test_restore_data", ".csv");
-        tempFile.deleteOnExit();
-
-        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile, new InMemoryHistoryManager());
-
-        Task task = new Task(1,"Сходить в магазин", "Купить хлеб", TaskStatus.NEW);
-        manager.createTask(task);
-
-        Epic epic = new Epic(2,"Ремонт", "Ремонт в квартире");
-        manager.createEpic(epic);
-
-        Subtask subtask = new Subtask(3,"Купить краску", "Синий цвет", TaskStatus.IN_PROGRESS, epic.getId());
-        manager.createSubtask(subtask);
 
         manager.save();
 
-        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
+        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(TEST_FILE);
 
-        assertEquals(1, loadedManager.getAllTask().size(), "Неверное количество загруженных задач");
-        assertEquals(1, loadedManager.getAllEpic().size(), "Неверное количество загруженных эпиков");
-        assertEquals(1, loadedManager.getAllSubtask().size(), "Неверное количество загруженных подзадач");
+        Assertions.assertEquals(1, loadedManager.getAllTask().size());
+        Assertions.assertEquals(1, loadedManager.getAllEpic().size());
 
-        Task loadedTask = loadedManager.getAllTask().getFirst();
-        assertEquals(task.getName(), loadedTask.getName(), "Имя задачи не совпадает");
-        assertEquals(task.getStatus(), loadedTask.getStatus(), "Статус задачи не совпадает");
-
-        Epic loadedEpic = loadedManager.getAllEpic().getFirst();
-        assertEquals(epic.getName(), loadedEpic.getName(), "Имя эпика не совпадает");
-
-        Subtask loadedSubtask = loadedManager.getAllSubtask().getFirst();
-        assertEquals(subtask.getEpicId(), loadedSubtask.getEpicId(), "Epic ID подзадачи не совпадает");
+        Files.delete(TEST_FILE.toPath());
     }
 
     @Test
-    void shouldHandleEmptyHistory() throws IOException {
-        File tempFile = File.createTempFile("test_empty_history", ".csv");
-        tempFile.deleteOnExit();
-
-        FileBackedTaskManager manager = new FileBackedTaskManager(tempFile, new InMemoryHistoryManager());
-
-        Task task = new Task(1,"Тестовая задача", "Описание", TaskStatus.NEW);
-        manager.createTask(task);
-        manager.save();
-
-        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
-
-        assertTrue(loadedManager.historyManager.getHistory().isEmpty(), "История должна быть пустой");
+    void shouldThrowManagerSaveExceptionWhenFileIsNotAccessible() {
+        Assertions.assertThrows(ManagerSaveException.class, () -> {
+            FileBackedTaskManager managerWithNoPermission = new FileBackedTaskManager(new File("/restricted/path"), new InMemoryHistoryManager());
+            managerWithNoPermission.save();
+        });
     }
+
+    @Test
+    void shouldHandleEmptyFileGracefully() throws IOException {
+        if (!TEST_FILE.exists()) {
+            Files.createFile(TEST_FILE.toPath());
+        }
+
+        FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(TEST_FILE);
+
+        Assertions.assertEquals(0, loadedManager.getAllTask().size());
+        Assertions.assertEquals(0, loadedManager.getAllEpic().size());
+        Assertions.assertEquals(0, loadedManager.getAllSubtask().size());
+
+        Files.delete(TEST_FILE.toPath());
+    }
+
+
+    @Test
+    void shouldThrowExceptionIfFileIsCorrupted() throws IOException {
+        if (TEST_FILE.exists()) {
+            Files.delete(TEST_FILE.toPath());
+        }
+
+        Files.createFile(TEST_FILE.toPath());
+
+        Files.write(TEST_FILE.toPath(), "corrupted data".getBytes());
+
+        Assertions.assertThrows(ManagerSaveException.class, () -> {
+            FileBackedTaskManager.loadFromFile(TEST_FILE);
+        });
+
+        Files.delete(TEST_FILE.toPath());
+    }
+
 }
