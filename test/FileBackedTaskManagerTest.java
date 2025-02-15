@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import ru.scompany.trackerapp.model.Epic;
-import ru.scompany.trackerapp.model.ManagerSaveException;
+import ru.scompany.trackerapp.exception.ManagerSaveException;
 import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.FileBackedTaskManager;

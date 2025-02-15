@@ -9,10 +9,7 @@ import java.util.Objects;
 
 public class Epic extends Task {
 
-    private final List<Integer> subtasksIds;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private Duration duration;
+    private List<Integer> subtasksIds;
 
     public Epic(int id, String name, String description) {
         super(id, name, description, TaskStatus.NEW, Duration.ZERO, LocalDateTime.now());
@@ -20,21 +17,28 @@ public class Epic extends Task {
     }
 
     public void updateTimeAndDuration(Map<Integer, Subtask> subtasks) {
+        if (subtasks == null || subtasks.isEmpty()) {
+            this.duration = Duration.ZERO;
+            this.startTime = null;
+            this.endTime = null;
+            return;
+        }
+
         this.duration = subtasksIds.stream()
-                .map(subtaskId -> subtasks.get(subtaskId))
+                .map(subtasks::get)
                 .filter(Objects::nonNull)
                 .map(Subtask::getDuration)
                 .reduce(Duration.ZERO, Duration::plus);
 
         this.startTime = subtasksIds.stream()
-                .map(subtaskId -> subtasks.get(subtaskId))
+                .map(subtasks::get)
                 .filter(Objects::nonNull)
                 .map(Subtask::getStartTime)
                 .min(LocalDateTime::compareTo)
                 .orElse(null);
 
         this.endTime = subtasksIds.stream()
-                .map(subtaskId -> subtasks.get(subtaskId))
+                .map(subtasks::get)
                 .filter(Objects::nonNull)
                 .map(Subtask::getEndTime)
                 .max(LocalDateTime::compareTo)
@@ -56,8 +60,12 @@ public class Epic extends Task {
         return endTime;
     }
 
-    public List<Integer> getSubtasksId() {
+    public List<Integer> getSubtasksIds() {
         return subtasksIds;
+    }
+
+    public void setSubtasksIds(List<Integer> subtasksIds) {
+        this.subtasksIds = subtasksIds != null ? subtasksIds : new ArrayList<>();
     }
 
     public void addSubtaskId(int subtaskId, Map<Integer, Subtask> subtasks) {
@@ -73,7 +81,7 @@ public class Epic extends Task {
         }
     }
 
-    public void clearSubtasksId() {
+    public void clearSubtasksIds() {
         subtasksIds.clear();
     }
 
@@ -84,7 +92,7 @@ public class Epic extends Task {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
-                ", duration=" + duration.toMinutes() + " min" +
+                ", duration=" + (duration != null ? duration.toMinutes() + " min" : "null") +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", subtaskIds=" + subtasksIds +
