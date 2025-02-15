@@ -5,7 +5,7 @@ import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.model.TaskType;
-import ru.scompany.trackerapp.model.ManagerSaveException;
+import ru.scompany.trackerapp.exception.ManagerSaveException;
 
 import java.io.File;
 import java.io.FileWriter;

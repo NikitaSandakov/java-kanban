@@ -24,26 +24,27 @@ public class Main {
             manager = Managers.getFileBackedTaskManager(file);
         }
 
-        Task task1 = new Task(0, "Name of the first task", "Task 1", TaskStatus.NEW,
+        Task task1 = new Task(1, "Name of the first task", "Task 1", TaskStatus.NEW,
                 Duration.ofHours(1), LocalDateTime.now());
-        Task task2 = new Task(0, "Name of the second task", "Task 2", TaskStatus.NEW,
+        Task task2 = new Task(2, "Name of the second task", "Task 2", TaskStatus.NEW,
                 Duration.ofHours(2), LocalDateTime.now().plusHours(3));
+        manager.createTask(task1);
         manager.createTask(task2);
 
-        Epic epic1 = new Epic(0, "Name of the first epic", "Epic 1");
+        Epic epic1 = new Epic(3, "Name of the first epic", "Epic 1");
         manager.createEpic(epic1);
 
-        Subtask subtask1 = new Subtask(0, "Name of the first subtask", "Subtask 1 for Epic 1",
+        Epic epic2 = new Epic(4, "Name of the second epic", "Epic 2");
+        manager.createEpic(epic2);
+
+        Subtask subtask1 = new Subtask(5, "Name of the first subtask", "Subtask 1 for Epic 1",
                 TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(5), epic1.getId());
-        Subtask subtask2 = new Subtask(0, "Name of the second subtask", "Subtask 2 for Epic 1",
+        Subtask subtask2 = new Subtask(6, "Name of the second subtask", "Subtask 2 for Epic 1",
                 TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(7), epic1.getId());
         manager.createSubtask(subtask1);
         manager.createSubtask(subtask2);
 
-        Epic epic2 = new Epic(0, "Name of the second epic", "Epic 2");
-        manager.createEpic(epic2);
-
-        Subtask subtask3 = new Subtask(0, "Name of the third subtask", "Subtask 3 for Epic 2",
+        Subtask subtask3 = new Subtask(7, "Name of the third subtask", "Subtask 3 for Epic 2",
                 TaskStatus.NEW, Duration.ofHours(1), LocalDateTime.now().plusHours(10), epic2.getId());
         manager.createSubtask(subtask3);
 
@@ -56,10 +57,13 @@ public class Main {
 
         task1.setStatus(TaskStatus.IN_PROGRESS);
         manager.updateTask(task1);
+
         subtask1.setStatus(TaskStatus.DONE);
         manager.updateTask(subtask1);
+
         subtask2.setStatus(TaskStatus.IN_PROGRESS);
         manager.updateTask(subtask2);
+
         subtask3.setStatus(TaskStatus.DONE);
         manager.updateTask(subtask3);
 
@@ -89,7 +93,6 @@ public class Main {
         System.out.println("Эпики:");
         for (Epic epic : manager.getAllEpic()) {
             System.out.println(epic);
-
             for (Subtask subtask : manager.getSubtasksOfEpic(epic.getId())) {
                 System.out.println("--> " + subtask);
             }
@@ -100,9 +103,9 @@ public class Main {
             System.out.println(subtask);
         }
 
-        manager.getTask(1);
-        manager.getEpic(5);
-        manager.getSubtask(6);
+        manager.getTask(2);
+        manager.getEpic(4);
+        manager.getSubtask(7);
 
         System.out.println("История:");
         for (Task task : manager.getHistory()) {

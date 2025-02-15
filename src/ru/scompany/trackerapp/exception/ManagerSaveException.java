@@ -1,4 +1,4 @@
-package ru.scompany.trackerapp.model;
+package ru.scompany.trackerapp.exception;
 
 public class ManagerSaveException extends RuntimeException {
     public ManagerSaveException(String message, Throwable cause) {
