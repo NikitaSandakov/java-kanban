@@ -1,2 +1,6 @@
 id,type,name,status,description,duration,startTime,epic
+2,TASK,Name of the second task,NEW,Task 2,120,2025-02-18T03:22:37.762561200
+4,EPIC,Name of the second epic,DONE,Epic 2,60,2025-02-18T10:22:37.775574600
+7,SUBTASK,Name of the third subtask,DONE,Subtask 3 for Epic 2,60,2025-02-18T10:22:37.775574600,4
 
+2
