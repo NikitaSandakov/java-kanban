@@ -2,7 +2,6 @@ package ru.scompany.trackerapp.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import ru.scompany.trackerapp.exception.NotFoundException;
 import ru.scompany.trackerapp.model.Task;
@@ -10,9 +9,7 @@ import ru.scompany.trackerapp.service.HistoryManager;
 import ru.scompany.trackerapp.service.TaskManager;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
