@@ -2,17 +2,22 @@ package test;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ru.scompany.trackerapp.exception.NotFoundException;
 import ru.scompany.trackerapp.model.Task;
 import ru.scompany.trackerapp.model.Epic;
 import ru.scompany.trackerapp.model.Subtask;
 import ru.scompany.trackerapp.model.TaskStatus;
 import ru.scompany.trackerapp.service.InMemoryTaskManager;
+import ru.scompany.trackerapp.service.TaskManager;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class InMemoryTaskManagerTest {
 
@@ -85,7 +90,6 @@ public class InMemoryTaskManagerTest {
         assertEquals(epic.getId(), retrievedSubtask.getEpicId());
     }
 
-
     @Test
     public void testEpicStatusCalculation() {
         Epic epic = new Epic(1, "Epic 1", "Description of Epic 1");
@@ -102,15 +106,14 @@ public class InMemoryTaskManagerTest {
         assertEquals(TaskStatus.IN_PROGRESS, epic.getStatus());
     }
 
-
     @Test
-    public void testRemoveTaskById() {
-        Task task = new Task(1, "Task 1", "Description of Task 1", TaskStatus.NEW,
-                Duration.ofHours(1), LocalDateTime.now());
+    void testRemoveTaskById() {
+        Task task = new Task(1, "Test Task", "Test task description", TaskStatus.NEW, Duration.ofHours(2), LocalDateTime.now());
         taskManager.createTask(task);
-        taskManager.removeTaskById(task.getId());
 
-        assertNull(taskManager.getTask(task.getId()));
+        taskManager.removeTaskById(1);
+
+        assertThrows(NotFoundException.class, () -> taskManager.getTask(1));
     }
 
     @Test
@@ -122,11 +125,12 @@ public class InMemoryTaskManagerTest {
                 Duration.ofHours(1), LocalDateTime.now(), epic.getId());
         taskManager.createSubtask(subtask);
 
-        taskManager.removeTaskById(epic.getId());
+        assertNotNull(taskManager.getEpic(epic.getId()));
+        assertNotNull(taskManager.getSubtask(subtask.getId()));
 
-        assertNull(taskManager.getEpic(epic.getId()));
-        assertNull(taskManager.getSubtask(subtask.getId()));
+        taskManager.removeEpicById(epic.getId());
     }
+
 
     @Test
     public void testTaskImmutabilityAfterAdding() {

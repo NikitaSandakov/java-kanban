@@ -1,6 +1,7 @@
 package ru.scompany.trackerapp.service;
 
 import ru.scompany.trackerapp.model.Task;
+
 import java.util.Comparator;
 
 public class TaskComparator implements Comparator<Task> {

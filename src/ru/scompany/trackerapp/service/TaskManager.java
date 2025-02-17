@@ -22,11 +22,15 @@ public interface TaskManager {
 
     Task getTask(int id);
 
-    Task getEpic(int id);
+    Epic getEpic(int id);
 
-    Task getSubtask(int id);
+    Subtask getSubtask(int id);
 
     void removeTaskById(int id);
+
+    void removeSubtaskById(int id);
+
+    void removeEpicById(int id);
 
     List<Subtask> getSubtasksOfEpic(int epicId);
 

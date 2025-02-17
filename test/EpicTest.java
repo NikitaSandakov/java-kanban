@@ -55,7 +55,7 @@ public class EpicTest {
             taskManager.createSubtask(subtask2);
         });
 
-        Assertions.assertEquals("Подзадача пересекается по времени с другой задачей", exception.getMessage());
+        Assertions.assertEquals("Subtask overlaps with another task's time.", exception.getMessage());
 
         boolean overlapAfter = taskManager.checkForTimeOverlap(subtask2);
         assertTrue(overlapAfter, "После добавления пересечение должно быть обнаружено");
