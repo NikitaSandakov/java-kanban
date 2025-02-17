@@ -181,7 +181,6 @@ public class InMemoryTaskManager implements TaskManager {
         task.setId(id);
         tasks.put(id, task);
         prioritizedTasks.add(task);
-        historyManager.add(task);
     }
 
 

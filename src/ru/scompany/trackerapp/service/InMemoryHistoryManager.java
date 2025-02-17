@@ -26,12 +26,22 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Subtask subtask) {
-
+        if (nodeMap.containsKey(subtask.getId())) {
+            Node oldNode = nodeMap.remove(subtask.getId());
+            removeNode(oldNode);
+        }
+        Node newNode = linkLast(subtask);
+        nodeMap.put(subtask.getId(), newNode);
     }
 
     @Override
     public void add(Epic epic) {
-
+        if (nodeMap.containsKey(epic.getId())) {
+            Node oldNode = nodeMap.remove(epic.getId());
+            removeNode(oldNode);
+        }
+        Node newNode = linkLast(epic);
+        nodeMap.put(epic.getId(), newNode);
     }
 
     @Override
